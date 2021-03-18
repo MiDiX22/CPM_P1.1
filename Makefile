@@ -1,20 +1,24 @@
 CC = cc
-
 SRC = kmeanCPM.c
-
 BIN = par
-
 CFLAGS = -fopenmp
-
 RESULT = result
+MKDIR_P = mkdir -p
 
 
 
-all : 
-	@$(CC) -O3 $(SRC) $(CFLAGS) -o $(BIN).o
+all : $(SRC)
+	@$(CC) -O3 $(SRC) $(CFLAGS) -o $(BIN).out
 
 clean : 
-	@rm -rf $(BIN).o
+	@rm -rf $(BIN).out
+	@rm -rf $(RESULT)/*
 
-run : 
-	@./$(BIN).o > result/$(BIN).txt
+run : all $(RESULT)
+	@./$(BIN).out > result/$(BIN).txt
+
+time : all $(RESULT)
+	time -p ./$(BIN).out > result/$(BIN).txt
+
+$(RESULT):
+	@$(MKDIR_P) $(RESULT)
