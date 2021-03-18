@@ -2,17 +2,19 @@ CC = cc
 
 SRC = kmeanCPM.c
 
-BIN = par.o
+BIN = par
 
 CFLAGS = -fopenmp
+
+RESULT = result
 
 
 
 all : 
-	@$(CC) -O3 $(SRC) $(CFLAGS) -o $(BIN)
+	@$(CC) -O3 $(SRC) $(CFLAGS) -o $(BIN).o
 
 clean : 
-	@rm -rf $(BIN)
+	@rm -rf $(BIN).o
 
 run : 
-	@./$(BIN)
+	@./$(BIN).o > result/$(BIN).txt
