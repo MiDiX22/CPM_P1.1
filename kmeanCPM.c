@@ -17,6 +17,7 @@ int fD[N];
 
 	do
 	{
+		#pragma omp parallel for
 	  	for (i=0;i<fN; i++)
 	   	{
 			min = 0;
