@@ -17,38 +17,45 @@ int fD[N];
 
 	do
 	{
-		#pragma omp parallel for
-	  	for (i=0;i<fN; i++)
-	   	{
-			min = 0;
-			dif = abs(fV[i] -fR[0]);
-			for (j=1;j<fK;j++)
-			{
-				if (abs(fV[i] -fR[j]) < dif)
+		#pragma omp parallel 
+		{
+			#pragma omp for
+			for (i=0;i<fN; i++)
+	   		{
+				min = 0;
+				dif = abs(fV[i] -fR[0]);
+				for (j=1;j<fK;j++)
 				{
-					min = j;
-					dif = abs(fV[i] -fR[j]);
+					if (abs(fV[i] -fR[j]) < dif)
+					{
+						min = j;
+						dif = abs(fV[i] -fR[j]);
+					}
 				}
-			}
-			fD[i] = min;
-	   	}
+				fD[i] = min;
+	   		}
 
-	  	for(i=0;i<fK;i++) fS[i] = fA[i] = 0;
+	  		for(i=0;i<fK;i++) fS[i] = fA[i] = 0;
+		}
+	  	
+		
+		#pragma omp parallel for 
+		for(i=0;i<fN;i++)
+		{
+			int idx = fD[i];
+			fS[idx] += fV[i];
+			fA[idx] ++;
+		}
 
-	  	for(i=0;i<fN;i++)
-	   	{
-			fS[fD[i]] += fV[i];
-			fA[fD[i]] ++;
-	   	}
-
-	  	dif = 0;
-	  	for(i=0;i<fK;i++)
-	   	{
+		dif = 0;
+	
+		for(i=0;i<fK;i++)
+		{
 			t = fR[i];
 			if (fA[i]) fR[i] = fS[i]/fA[i];
 			dif += abs(t - fR[i]);
-	   	}
-	   	iter ++;
+		}
+		iter ++;
 	} while(dif);
 
 	printf("iter %d\n",iter);
