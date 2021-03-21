@@ -12,7 +12,7 @@ all : $(SRC)
 
 clean : 
 	@rm -rf $(BIN).out
-	@rm -rf $(RESULT)/*
+	@rm -rf $(RESULT)/*.txt
 
 run : all $(RESULT)
 	@./$(BIN).out > result/$(BIN).txt
