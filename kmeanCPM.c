@@ -37,24 +37,25 @@ int fD[N];
 
 	  		for(i=0;i<fK;i++) fS[i] = fA[i] = 0;
 		}
-	  	
 		
-		#pragma omp parallel for 
+		// #pragma omp parallel for 
 		for(i=0;i<fN;i++)
-		{
-			int idx = fD[i];
-			fS[idx] += fV[i];
-			fA[idx] ++;
+		{ 	
+			fS[fD[i]] += fV[i];
+			fA[fD[i]] ++;
+			
 		}
 
 		dif = 0;
-	
+
+		#pragma omp parallel for reduction(+:dif) private (t)
 		for(i=0;i<fK;i++)
 		{
 			t = fR[i];
 			if (fA[i]) fR[i] = fS[i]/fA[i];
 			dif += abs(t - fR[i]);
 		}
+
 		iter ++;
 	} while(dif);
 
@@ -73,7 +74,7 @@ void qs(int ii, int fi, long fV[], int fA[])
 	vtmp = fV[i];
 	vta = fA[i];
 
-	while (i <= f)
+	for (;i <= f;)
 	{
 		if (vtmp < pi) {
 		fV[i-1] = vtmp;
