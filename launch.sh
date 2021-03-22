@@ -2,6 +2,8 @@
 
 rm -f $1$2.time
 
+export OMP_NUM_THREADS=$2
+
 echo "Starting first job"
 srun -p $1 -c $2 time ./kmeanCPM.out 1> $1$2.res 2>> $1$2.time.temp 
 echo "Starting second job"
