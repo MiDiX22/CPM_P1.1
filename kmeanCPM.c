@@ -19,7 +19,7 @@ int fD[N];
 	{
 		#pragma omp parallel 
 		{
-			#pragma omp for
+			#pragma omp for private (min)
 			for (i=0;i<fN; i++)
 	   		{
 				min = 0;
