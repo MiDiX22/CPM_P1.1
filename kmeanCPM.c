@@ -19,13 +19,17 @@ int fD[N];
 	{
 		#pragma omp parallel 
 		{
+			min=0;
 			#pragma omp for private (min, dif)
 			for (i=0;i<fN; i++)
 	   		{
-				min = 0;
-				dif = abs(fV[i] -fR[0]);
 				for (j=1;j<fK;j++)
-				{
+				{ 
+					if (j==1)
+					{
+						dif = abs(fV[i] -fR[0]);
+					}
+					
 					if (abs(fV[i] -fR[j]) < dif)
 					{
 						min = j;
@@ -33,6 +37,7 @@ int fD[N];
 					}
 				}
 				fD[i] = min;
+				min = 0;
 	   		}
 
 	  		for(i=0;i<fK;i++) fS[i] = fA[i] = 0;
